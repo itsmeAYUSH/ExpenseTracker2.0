@@ -3,25 +3,33 @@ import React, { useState } from "react";
 const LoginContext = React.createContext({
   email: null,
   idToken: null,
-  submitEmailToken: () => {},
-  logout: () => {}
+  login: () => {},
+  logout: () => {},
 });
 
 export const LoginContextProvider = (props) => {
-  const [email, setEmail] = useState("");
-  const [idToken, setIdToken] = useState("");
+  const [email, setEmail] = useState(localStorage.getItem("emailId"));
+  const [idToken, setIdToken] = useState(localStorage.getItem("idToken"));
 
-  const submitEmailTokenHandler = (email, idToken) => {
+  const loginHandler = (email, idToken) => {
     setEmail(email);
     setIdToken(idToken);
 
-    localStorage.setItem('EmailId', email)
+    localStorage.setItem("EmailId", email);
+    localStorage.setItem("idToken", idToken);
+  };
+  const logoutHandler = () => {
+    setEmail(null);
+    setIdToken(null);
 
+    localStorage.removeItem("emailId");
+    localStorage.removeItem("idToken");
   };
   const loginContext = {
     email: email,
     idToken: idToken,
-    submitEmailToken: submitEmailTokenHandler,
+    login: loginHandler,
+    logout: logoutHandler,
   };
   return (
     <LoginContext.Provider value={loginContext}>

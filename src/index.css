@@ -5,7 +5,10 @@
 }
 
 html {
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Rajdhani", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f1ffe0;
 }
 
 body {

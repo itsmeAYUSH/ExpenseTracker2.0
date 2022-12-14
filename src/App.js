@@ -13,9 +13,9 @@ function App() {
     <React.Fragment>
       <LoginContextProvider>
         <Header></Header>
-        <Route path="*">
+        {/* <Route path="*">
           <Redirect to="/signUp" />
-        </Route>
+        </Route> */}
         <Route path="/signUp">
           <SignUp />
         </Route>

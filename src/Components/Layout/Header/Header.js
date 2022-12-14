@@ -12,9 +12,14 @@ const Header = () => {
       <div>
         <h3>Expense Tracker</h3>
       </div>
-      <Link to="/signIn">Sign In</Link>
-      <Link to="/items">Items</Link>
-      {!!visibleLogout && <Link onClick={loginCtx.logout}>Logout</Link>}
+      {!loginCtx.email && <Link to="/signUp">Sign Up</Link>}
+      {!loginCtx.email && <Link to="/signIn">Sign In</Link>}
+      {!!loginCtx.email && <Link to="/items">Items</Link>}
+      {!!loginCtx.email && (
+        <Link onClick={loginCtx.logout} to="/signIn">
+          Logout
+        </Link>
+      )}
     </header>
   );
 };

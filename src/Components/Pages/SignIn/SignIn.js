@@ -41,7 +41,7 @@ const SignIn = () => {
       emailRef.current.value = "";
       pswdRef.current.value = "";
 
-      loginCtx.submitEmailToken(data.email, data.idToken);
+      loginCtx.login(data.email, data.idToken);
 
       history.replace("/welcome");
     } else {
