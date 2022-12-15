@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { useContext } from "react";
+import ExpenseContext from "../../Context/ExpenseContext";
 
-const ExpenseItem = (props) => {
-  const expenseItem = props.expenseItem;
-  console.log(expenseItem);
+const ExpenseItem = () => {
+  const expenseCtx = useContext(ExpenseContext);
 
   return (
     <ul>
-      {expenseItem.map((expenseItem) => (
-        <li key={expenseItem.money + expenseItem.description}>
+      {expenseCtx.expenses.map((expenseItem) => (
+        <li key={expenseItem.id}>
           {expenseItem.money} {expenseItem.description} {expenseItem.category}
         </li>
       ))}
     </ul>
   );
 };
-
 export default ExpenseItem;

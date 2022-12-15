@@ -1,23 +1,28 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useEffect } from "react";
+import ExpenseContext from "../../Context/ExpenseContext";
 import Form from "../../Layout/UI/Form";
 import ExpenseItem from "./ExpenseItem";
 
 const Expenses = () => {
+  const expenseCtx = useContext(ExpenseContext);
   const moneyRef = useRef("");
   const descRef = useRef("");
   const categoryRef = useRef("");
-  const [expenseItem, setExpenseItem] = useState([]);
   const addExpenseHandler = (event) => {
     event.preventDefault();
-    setExpenseItem([
-      ...expenseItem,
-      {
-        money: moneyRef.current.value,
-        description: descRef.current.value,
-        category: categoryRef.current.value,
-      },
-    ]);
+    const expense = {
+      money: moneyRef.current.value,
+      description: descRef.current.value,
+      category: categoryRef.current.value,
+    };
+
+    expenseCtx.addExpense(expense);
   };
+
+  useEffect(() => {
+    expenseCtx.getExpense();
+  }, []);
+
   return (
     <React.Fragment>
       <h2>Expenses Page...</h2>
@@ -40,9 +45,8 @@ const Expenses = () => {
         </div>
         <button>Add Expense</button>
       </Form>
-      <ExpenseItem expenseItem={expenseItem} />
+      <ExpenseItem />
     </React.Fragment>
   );
 };
-
 export default Expenses;
