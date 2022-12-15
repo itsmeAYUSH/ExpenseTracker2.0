@@ -6,13 +6,16 @@ import { Redirect, Route } from "react-router-dom";
 import SignIn from "./Components/Pages/SignIn/SignIn";
 import Welcome from "./Components/Pages/Welcome/Welcome";
 import IncompleteProfile from "./Components/Pages/IncompleteProfile/IncompleteProfile";
-import { LoginContextProvider } from "./Components/Context/LoginContext";
+import LoginContext, { LoginContextProvider } from "./Components/Context/LoginContext";
 import ForgotPassword from "./Components/Pages/ForgotPassword/ForgotPassword";
+import { useContext } from "react";
+import Expenses from "./Components/Pages/Expenses/Expenses";
 
 function App() {
+  const loginCtx = useContext(LoginContext);
+  const isLoggedIn = loginCtx.isLoggedIn;
   return (
     <React.Fragment>
-      <LoginContextProvider>
         <Header></Header>
         {/* <Route path="*">
           <Redirect to="/signUp" />
@@ -32,7 +35,9 @@ function App() {
         <Route path="/forgotPassword">
           <ForgotPassword />
         </Route>
-      </LoginContextProvider>
+        <Route path="/expenses">
+        {isLoggedIn ? <Expenses /> : <Redirect to="/signIn" />}
+      </Route>
     </React.Fragment>
   );
 }
