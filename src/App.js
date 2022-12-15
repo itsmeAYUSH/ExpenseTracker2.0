@@ -7,6 +7,7 @@ import SignIn from "./Components/Pages/SignIn/SignIn";
 import Welcome from "./Components/Pages/Welcome/Welcome";
 import IncompleteProfile from "./Components/Pages/IncompleteProfile/IncompleteProfile";
 import { LoginContextProvider } from "./Components/Context/LoginContext";
+import ForgotPassword from "./Components/Pages/ForgotPassword/ForgotPassword";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route path="/incompleteProfile">
           <IncompleteProfile />
+        </Route>
+        <Route path="/forgotPassword">
+          <ForgotPassword />
         </Route>
       </LoginContextProvider>
     </React.Fragment>
