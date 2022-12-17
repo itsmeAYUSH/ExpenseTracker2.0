@@ -1,17 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
-import LoginContext from "../../Context/LoginContext";
+// import LoginContext from "../../Context/LoginContext";
 // import classes from "./SignIn.module.css";
 import Form from "../../Layout/UI/Form";
+import { useDispatch } from "react-redux";
+import { AuthActions } from "../../Store/AuthReducer";
 
 const SignIn = () => {
   const emailRef = useRef("");
   const pswdRef = useRef("");
 
   const history = useHistory("");
+  const dispatch = useDispatch();
 
-  const loginCtx = useContext(LoginContext);
+  // const loginCtx = useContext(LoginContext);
 
   const signInSubmitHandler = async (event) => {
     event.preventDefault();
@@ -42,7 +45,8 @@ const SignIn = () => {
       emailRef.current.value = "";
       pswdRef.current.value = "";
 
-      loginCtx.login(data.email, data.idToken);
+      // loginCtx.login(data.email, data.idToken);
+      dispatch(AuthActions.login({ email: data.email, idToken: data.idToken }));
 
       history.replace("/expenses");
     } else {
@@ -51,26 +55,26 @@ const SignIn = () => {
   };
   return (
     <Form onSubmit={signInSubmitHandler}>
-    <div>
-      <h3>Sign In</h3>
-    </div>
-    <div>
-      <input
-        id="emailId"
-        placeholder="Email"
-        type="text"
-        ref={emailRef}
-      ></input>
-      <input
-        id="passwordId"
-        placeholder="Password"
-        type="password"
-        ref={pswdRef}
-      />
-    </div>
-    <button>Sign In</button>
-    <Link to="/forgotPassword">Forgot Password?</Link>
-  </Form>
+      <div>
+        <h3>Sign In</h3>
+      </div>
+      <div>
+        <input
+          id="emailId"
+          placeholder="Email"
+          type="text"
+          ref={emailRef}
+        ></input>
+        <input
+          id="passwordId"
+          placeholder="Password"
+          type="password"
+          ref={pswdRef}
+        />
+      </div>
+      <button>Sign In</button>
+      <Link to="/forgotPassword">Forgot Password?</Link>
+    </Form>
   );
 };
 export default SignIn;

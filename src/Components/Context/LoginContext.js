@@ -34,7 +34,7 @@ export const LoginContextProvider = (props) => {
   const loginContext = {
     email: email,
     idToken: idToken,
-    isLoggedIn:isLoggedIn,
+    isLoggedIn: isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
   };

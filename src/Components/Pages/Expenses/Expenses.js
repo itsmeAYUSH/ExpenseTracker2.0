@@ -1,13 +1,16 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
-import ExpenseContext from "../../Context/ExpenseContext";
+import React, { useRef, useEffect, useState } from "react";
+// import ExpenseContext from "../../Context/ExpenseContext";
 import Form from "../../Layout/UI/Form";
 import EditForm from "./EditForm";
 import ExpenseItem from "./ExpenseItem";
+import { useDispatch } from "react-redux";
+import { ExpenseActions } from "../../Store/ExpenseReducer";
 
-const Expenses = () => {
-  const expenseCtx = useContext(ExpenseContext);
+const Expenses = (props) => {
+  // const expenseCtx = useContext(ExpenseContext);
   const [editFormState, setEditFormState] = useState(false);
   const [editExpense, setEditExpense] = useState("");
+  const dispatch = useDispatch();
 
   const moneyRef = useRef("");
   const descRef = useRef("");
@@ -21,7 +24,7 @@ const Expenses = () => {
       category: categoryRef.current.value,
     };
 
-    expenseCtx.addExpense(expense);
+    addExpenseFetching(expense);
 
     moneyRef.current.value = "";
     descRef.current.value = "";
@@ -43,9 +46,34 @@ const Expenses = () => {
     setEditFormState(false);
   };
 
+  const addExpenseFetching = async (expense) => {
+    try {
+      const response = await fetch(
+        "https://expensetracker-f79f1-default-rtdb.firebaseio.com/expenses.json",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            money: expense.money,
+            description: expense.description,
+            category: expense.category,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log("Expenses", data);
+      props.getExpenseFetching();
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
-    expenseCtx.getExpense();
+    props.getExpenseFetching();
   }, []);
+
   return (
     <React.Fragment>
       <h2>Expenses Page...</h2>
@@ -70,9 +98,16 @@ const Expenses = () => {
         </div>
         <button>Add Expense</button>
       </Form>
-      <ExpenseItem editExpense={editExpenseHandler} />
+      <ExpenseItem
+        editExpense={editExpenseHandler}
+        getExpenseFetching={props.getExpenseFetching}
+      />
       {editFormState && (
-        <EditForm onClose={onCloseStateHandler} editExpense={editExpense} />
+        <EditForm
+          onClose={onCloseStateHandler}
+          editExpense={editExpense}
+          getExpenseFetching={props.getExpenseFetching}
+        />
       )}
     </React.Fragment>
   );
