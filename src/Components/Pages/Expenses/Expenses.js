@@ -1,36 +1,25 @@
-import React, { useRef, useEffect, useState } from "react";
-// import ExpenseContext from "../../Context/ExpenseContext";
-import Form from "../../Layout/UI/Form";
+import React, { useEffect, useState } from "react";
 import EditForm from "./EditForm";
 import ExpenseItem from "./ExpenseItem";
-import { useSelector } from "react-redux";
-// import { ExpenseActions } from "../../Store/ExpenseReducer";
-import './Expenses.css';
+import { useSelector, useDispatch } from "react-redux";
+import classes from "./Expenses.module.css";
+import "react-calendar/dist/Calendar.css";
+import {
+  deleteExpenseFetching,
+  getExpenseFetching,
+} from "../../Store/ActionCreators/ExpenseActionCreators";
+import AddExpenseForm from "./AddExpenseForm";
 
 const Expenses = (props) => {
-  // const expenseCtx = useContext(ExpenseContext);
   const [editFormState, setEditFormState] = useState(false);
+  const [addFormState, setAddFormState] = useState(false);
   const [editExpense, setEditExpense] = useState("");
 
-  const theme = useSelector((state) => state.theme.theme);
-  const moneyRef = useRef("");
-  const descRef = useRef("");
-  const categoryRef = useRef("");
+  const emailId = useSelector((state) => state.auth.email);
+  const regex = /[.@]/g;
+  const email = emailId.replace(regex, "");
 
-  const addExpenseHandler = (event) => {
-    event.preventDefault();
-    const expense = {
-      money: moneyRef.current.value,
-      description: descRef.current.value,
-      category: categoryRef.current.value,
-    };
-
-    addExpenseFetching(expense);
-
-    moneyRef.current.value = "";
-    descRef.current.value = "";
-    categoryRef.current.value = "Food";
-  };
+  const dispatch = useDispatch();
 
   const editExpenseHandler = (id, money, description, category) => {
     setEditFormState(true);
@@ -43,71 +32,50 @@ const Expenses = (props) => {
     setEditExpense(expense);
   };
 
-  const onCloseStateHandler = () => {
+  const addExpenseHandler = () => {
+    setAddFormState(true);
+  };
+
+  const deleteExpenseHandler = (id) => {
+    dispatch(deleteExpenseFetching(id, email));
+  };
+
+  const onCloseEditStateHandler = () => {
     setEditFormState(false);
   };
 
-  const addExpenseFetching = async (expense) => {
-    try {
-      const response = await fetch(
-        "https://expensetracker-f79f1-default-rtdb.firebaseio.com/expenses.json",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            money: expense.money,
-            description: expense.description,
-            category: expense.category,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("Expenses", data);
-      props.getExpenseFetching();
-    } catch (error) {
-      alert(error.message);
-    }
+  const onCloseAddStateHandler = () => {
+    setAddFormState(false);
   };
 
   useEffect(() => {
-    props.getExpenseFetching();
-  }, []);
+    dispatch(getExpenseFetching(email));
+  }, [dispatch, email]);
 
   return (
-    <div className={`${theme}`}>
-      <h2>Expenses Page...</h2>
-      <Form onSubmit={addExpenseHandler}>
-        <h2>Add Expense</h2>
-        <div>
-          <label htmlFor="moneyId">Money Spent</label>
-          <input id="moneyId" type="number" ref={moneyRef} required></input>
-        </div>
-        <div>
-          <label htmlFor="descId">Description</label>
-          <input id="descId" type="text" ref={descRef} required></input>
-        </div>
-        <div htmlFor="categoryId">
-          <label htmlFor="categoryId">Category</label>
-          <select id="categoryId" ref={categoryRef}>
-            <option value="Food">Food</option>
-            <option value="Grocery">Grocery</option>
-            <option value="Fuel">Fuel</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <button>Add Expense</button>
-      </Form>
-      <ExpenseItem
-        editExpense={editExpenseHandler}
-        getExpenseFetching={props.getExpenseFetching}
-      />
+    <div className={classes.Expenses}>
+      <h2>Expenses Items</h2>
+      <div>
+        <ExpenseItem
+          editExpense={editExpenseHandler}
+          deleteExpenseHandler={deleteExpenseHandler}
+        />
+      </div>
+      <button onClick={addExpenseHandler} className={classes.AddButton}>
+        +
+      </button>
+      {addFormState && (
+        <AddExpenseForm
+          onClose={onCloseAddStateHandler}
+          email={email}
+        ></AddExpenseForm>
+      )}
+
       {editFormState && (
         <EditForm
-          onClose={onCloseStateHandler}
+          onClose={onCloseEditStateHandler}
           editExpense={editExpense}
-          getExpenseFetching={props.getExpenseFetching}
+          email={email}
         />
       )}
     </div>

@@ -1,24 +1,32 @@
-.backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 20;
-    background-color: rgba(0, 0, 0, 0.75);
-  }
-  
-  .modal {
-    position: fixed;
-    border-radius: 14px;
-    z-index: 30;
-    width: 95%;
-    max-width: 25rem;
-    padding: 1rem;
-    text-align: center;
-    background-color: lightblue;
-    display: flex;
-    flex-direction: column;
-    left: 33%;
-    top: 20%;
-  }
+.ExpenseItem {
+  width: 70%;
+  height: 25rem;
+  margin: 1rem auto;
+  overflow-y: scroll;
+}
+
+.ExpenseItem h2 {
+  text-align: left;
+  margin-right: 3rem;
+}
+
+.ExpenseItem header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.ExpenseItem li {
+  list-style: none;
+}
+
+.ExpenseItem div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ExpenseItem button:hover,
+button.hover {
+  background-color: rgb(171, 102, 11);
+}

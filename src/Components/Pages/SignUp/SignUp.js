@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./SignUp.module.css";
 import Form from "../../Layout/UI/Form";
+import Button from "../../Layout/UI/Button";
 
 const SignUp = () => {
   const emailRef = useRef("");
@@ -93,7 +94,7 @@ const SignUp = () => {
         />
         {confirmValid && <p>Please Match the Password</p>}
       </div>
-      <button>Sign Up</button>
+      <Button>Sign Up</Button>
     </Form>
   );
 };

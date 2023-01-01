@@ -1,10 +1,37 @@
-.Header {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-  
-  .Links Link {
-    padding: 5px;
-    margin: 3px;
-  }
+.header {
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 0 3%;
+  border-bottom:3px solid  hsl(34deg 100% 50%);
+}
+
+.header h1 {
+  color: #A66CFF;
+}
+
+.header ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header a {
+  color: hsl(34deg 100% 50%);
+  text-decoration: none;
+  font-size: larger;
+  padding: 1rem;
+}
+
+.header a:hover,
+.header a:active,
+.header a.active {
+  color: rgb(171, 102, 11);
+}
+
+.header button:hover,
+button.hover {
+  background-color: rgb(171, 102, 11);
+}

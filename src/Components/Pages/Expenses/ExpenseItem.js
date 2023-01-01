@@ -1,52 +1,47 @@
-// import { useContext } from "react";
-// import ExpenseContext from "../../Context/ExpenseContext";
-import { useDispatch,useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import Button from "../../Layout/UI/Button";
+import classes from "./ExpenseItem.module.css";
 
 const ExpenseItem = (props) => {
-  // const expenseCtx = useContext(ExpenseContext);
   const expenses = useSelector((state) => state.expense.expenses);
 
-  const deleteExpenseHandler = async (id) => {
-    try {
-      const response = await fetch(
-        `https://expensetracker-f79f1-default-rtdb.firebaseio.com/expenses/${id}.json`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-
-      props.getExpenseFetching();
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
   return (
-    <ul>
-      {expenses.map((expenseItem) => (
-        <li key={expenseItem.id}>
-          {expenseItem.money} {expenseItem.description} {expenseItem.category}
-          <button
-            onClick={props.editExpense.bind(
-              null,
-              expenseItem.id,
-              expenseItem.money,
-              expenseItem.description,
-              expenseItem.category
-            )}
-          >
-            Edit
-          </button>
-          <button onClick={deleteExpenseHandler.bind(null, expenseItem.id)}>
-            Delete
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div className={classes.ExpenseItem}>
+      <ul>
+        {expenses.map((expenseItem) => (
+          <li key={expenseItem.id}>
+            <header>
+              <h2>{expenseItem.description}</h2>
+              <h2>${expenseItem.money}</h2>
+            </header>
+            <div>
+              <h4>Category: {expenseItem.category}</h4>
+              <div className={classes.ButtonItems}>
+                <Button
+                  onClick={props.editExpense.bind(
+                    null,
+                    expenseItem.id,
+                    expenseItem.money,
+                    expenseItem.description,
+                    expenseItem.category
+                  )}
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={props.deleteExpenseHandler.bind(
+                    null,
+                    expenseItem.id
+                  )}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 export default ExpenseItem;
